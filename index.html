@@ -1,1 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pinterest Video Downloader – Free & Fast</title>
 
+<meta name="description" content="Download Pinterest videos online for free. Fast, safe and mobile friendly Pinterest Video Downloader.">
+<meta name="robots" content="index, follow">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:system-ui}
+body{
+  background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+  color:#fff;
+  min-height:100vh;
+}
+.container{
+  max-width:520px;
+  margin:auto;
+  padding:20px;
+}
+.card{
+  background:#0b1220;
+  border-radius:18px;
+  padding:25px;
+  box-shadow:0 25px 50px rgba(0,0,0,.5);
+}
+h1{text-align:center;font-size:26px;margin-bottom:10px}
+p{text-align:center;opacity:.85;margin-bottom:20px}
+input{
+  width:100%;
+  padding:14px;
+  border-radius:12px;
+  border:2px solid #00f2fe;
+  background:transparent;
+  color:#fff;
+  margin-bottom:15px;
+}
+button{
+  width:100%;
+  padding:14px;
+  border-radius:12px;
+  background:transparent;
+  border:2px solid #00f2fe;
+  color:#00f2fe;
+  font-size:16px;
+  cursor:pointer;
+  transition:.3s;
+}
+button:hover{background:#00f2fe;color:#000}
+button:active{transform:scale(.95)}
+#result{text-align:center;margin-top:20px}
+a.download{
+  display:inline-block;
+  margin-top:15px;
+  padding:12px 22px;
+  border:2px solid #00ff88;
+  border-radius:12px;
+  color:#00ff88;
+  text-decoration:none;
+}
+a.download:hover{background:#00ff88;color:#000}
+.ad-box{
+  margin:25px 0;
+  padding:15px;
+  border:2px dashed #555;
+  border-radius:12px;
+  text-align:center;
+}
+.footer{
+  text-align:center;
+  font-size:14px;
+  opacity:.7;
+  margin-top:15px;
+}
+</style>
+</head>
+
+<body>
+<div class="container">
+<div class="card">
+
+<h1>Pinterest Video Downloader</h1>
+<p>100% Free • No Login • Mobile Friendly</p>
+
+<input id="url" placeholder="Paste Pinterest video URL">
+<button onclick="download()">Download Video</button>
+
+<div id="result"></div>
+
+<div class="ad-box">
+Adsterra / Ads Area
+</div>
+
+<div class="footer">
+We do not host any files on our server.<br>
+© 2025 Pinterest Video Downloader
+</div>
+
+</div>
+</div>
+
+<script>
+async function download(){
+  const url=document.getElementById("url").value.trim();
+  const result=document.getElementById("result");
+
+  if(!url){
+    result.innerHTML="⚠️ Pinterest URL দিন";
+    return;
+  }
+
+  result.innerHTML="⏳ Processing...";
+
+  try{
+    const proxy="https://pinterest-proxy.username.workers.dev"+encodeURIComponent(url);
+    const res=await fetch(proxy);
+    const data=await res.json();
+
+    if(data.video){
+      result.innerHTML=`
+      ✅ Video Ready<br>
+      <a class="download" href="${data.video}" target="_blank">Download HD Video</a>`;
+    }else{
+      result.innerHTML="❌ Video পাওয়া যায়নি";
+    }
+  }catch(e){
+    result.innerHTML="❌ Server error";
+  }
+}
+</script>
+
+</body>
+</html>
