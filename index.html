@@ -3,132 +3,243 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Pinterest Video Downloader – Free & Fast</title>
-
-<meta name="description" content="Download Pinterest videos online for free. Fast, safe and mobile friendly Pinterest Video Downloader.">
-<meta name="robots" content="index, follow">
-
+<title>Pinterest Video Downloader</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:system-ui}
-body{
-  background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
-  color:#fff;
-  min-height:100vh;
-}
-.container{
-  max-width:520px;
-  margin:auto;
-  padding:20px;
-}
-.card{
-  background:#0b1220;
-  border-radius:18px;
-  padding:25px;
-  box-shadow:0 25px 50px rgba(0,0,0,.5);
-}
-h1{text-align:center;font-size:26px;margin-bottom:10px}
-p{text-align:center;opacity:.85;margin-bottom:20px}
-input{
-  width:100%;
-  padding:14px;
-  border-radius:12px;
-  border:2px solid #00f2fe;
-  background:transparent;
-  color:#fff;
-  margin-bottom:15px;
-}
-button{
-  width:100%;
-  padding:14px;
-  border-radius:12px;
-  background:transparent;
-  border:2px solid #00f2fe;
-  color:#00f2fe;
-  font-size:16px;
-  cursor:pointer;
-  transition:.3s;
-}
-button:hover{background:#00f2fe;color:#000}
-button:active{transform:scale(.95)}
-#result{text-align:center;margin-top:20px}
-a.download{
-  display:inline-block;
-  margin-top:15px;
-  padding:12px 22px;
-  border:2px solid #00ff88;
-  border-radius:12px;
-  color:#00ff88;
-  text-decoration:none;
-}
-a.download:hover{background:#00ff88;color:#000}
-.ad-box{
-  margin:25px 0;
-  padding:15px;
-  border:2px dashed #555;
-  border-radius:12px;
-  text-align:center;
-}
-.footer{
-  text-align:center;
-  font-size:14px;
-  opacity:.7;
-  margin-top:15px;
-}
+  /* --- CSS Design --- */
+  :root {
+    --primary-color: #E60023;
+    --hover-color: #ad081b;
+    --bg-color: #f0f2f5;
+  }
+
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--bg-color);
+    margin: 0;
+    padding: 0;
+  }
+
+  .p-downloader-container {
+    max-width: 600px;
+    margin: 40px auto;
+    background: #ffffff;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    text-align: center;
+  }
+
+  .p-downloader-title {
+    color: var(--primary-color);
+    margin-bottom: 10px;
+    font-size: 26px;
+    font-weight: 700;
+  }
+
+  .sub-text {
+    color: #666;
+    margin-bottom: 25px;
+    font-size: 15px;
+  }
+
+  .input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .p-input {
+    width: 100%;
+    padding: 15px;
+    border: 2px solid #ddd;
+    border-radius: 10px;
+    font-size: 16px;
+    outline: none;
+    box-sizing: border-box;
+    transition: 0.3s;
+  }
+
+  .p-input:focus {
+    border-color: var(--primary-color);
+  }
+
+  .p-btn {
+    width: 100%;
+    padding: 15px;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 18px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+
+  .p-btn:hover {
+    background-color: var(--hover-color);
+  }
+
+  /* Loader */
+  .loader {
+    border: 5px solid #f3f3f3;
+    border-top: 5px solid var(--primary-color);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+    margin: 20px auto;
+    display: none;
+  }
+
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+
+  /* Result Section */
+  #result-area {
+    margin-top: 30px;
+    display: none;
+    padding-top: 20px;
+    border-top: 1px solid #eee;
+  }
+  
+  .video-title {
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 10px;
+    display: block;
+  }
+
+  .video-preview {
+    width: 100%;
+    border-radius: 10px;
+    margin-bottom: 15px;
+    max-height: 450px;
+    background: #000;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  }
+
+  .download-btn {
+    display: inline-block;
+    background-color: #28a745;
+    color: white;
+    padding: 12px 30px;
+    text-decoration: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    margin-top: 5px;
+    transition: 0.3s;
+  }
+  
+  .download-btn:hover {
+    background-color: #218838;
+  }
+
+  .error-msg {
+    color: #dc3545;
+    margin-top: 15px;
+    font-weight: 500;
+  }
 </style>
 </head>
-
 <body>
-<div class="container">
-<div class="card">
 
-<h1>Pinterest Video Downloader</h1>
-<p>100% Free • No Login • Mobile Friendly</p>
+<div class="p-downloader-container">
+  <h2 class="p-downloader-title">Pinterest Video Downloader</h2>
+  <p class="sub-text">Download High Quality Pinterest Videos easily.</p>
+  
+  <div class="input-group">
+    <input type="text" id="pin-url" class="p-input" placeholder="Paste Pinterest link here...">
+    <button class="p-btn" onclick="getVideo()">Download</button>
+  </div>
 
-<input id="url" placeholder="Paste Pinterest video URL">
-<button onclick="download()">Download Video</button>
+  <div class="loader" id="loader"></div>
+  <div id="error-msg" class="error-msg"></div>
 
-<div id="result"></div>
-
-<div class="ad-box">
-Adsterra / Ads Area
-</div>
-
-<div class="footer">
-We do not host any files on our server.<br>
-© 2025 Pinterest Video Downloader
-</div>
-
-</div>
+  <div id="result-area">
+    <span id="video-title" class="video-title"></span>
+    <video id="video-player" class="video-preview" controls playsinline>
+      Your browser does not support the video tag.
+    </video>
+    <br>
+    <a id="download-link" href="#" class="download-btn" target="_blank" rel="noopener noreferrer">Download Video</a>
+  </div>
 </div>
 
 <script>
-async function download(){
-  const url=document.getElementById("url").value.trim();
-  const result=document.getElementById("result");
+  async function getVideo() {
+    const urlInput = document.getElementById('pin-url').value.trim();
+    const loader = document.getElementById('loader');
+    const resultArea = document.getElementById('result-area');
+    const errorMsg = document.getElementById('error-msg');
+    const videoPlayer = document.getElementById('video-player');
+    const downloadLink = document.getElementById('download-link');
+    const videoTitle = document.getElementById('video-title');
 
-  if(!url){
-    result.innerHTML="⚠️ Pinterest URL দিন";
-    return;
-  }
+    // UI Reset
+    resultArea.style.display = 'none';
+    errorMsg.innerText = '';
+    videoPlayer.src = '';
 
-  result.innerHTML="⏳ Processing...";
-
-  try{
-    const proxy="https://pinterest-proxy.username.workers.dev"+encodeURIComponent(url);
-    const res=await fetch(proxy);
-    const data=await res.json();
-
-    if(data.video){
-      result.innerHTML=`
-      ✅ Video Ready<br>
-      <a class="download" href="${data.video}" target="_blank">Download HD Video</a>`;
-    }else{
-      result.innerHTML="❌ Video পাওয়া যায়নি";
+    if (!urlInput) {
+      errorMsg.innerText = "Please paste a valid Pinterest link first.";
+      return;
     }
-  }catch(e){
-    result.innerHTML="❌ Server error";
+
+    loader.style.display = 'block';
+
+    // --- API CONFIGURATION ---
+    const apiKey = '124c1970dbmsha84ff0ef98a8e20p1977e4jsn10d1aa28ceb1';
+    
+    // মনে রাখবেন: যদি API Host আলাদা হয় তবে এটি পরিবর্তন করতে হবে।
+    // সাধারণত এই JSON ফরম্যাটটি "Pinterest Video and Image Downloader" API-এর।
+    const apiHost = 'pinterest-video-and-image-downloader.p.rapidapi.com'; 
+
+    const settings = {
+        method: 'GET',
+        headers: {
+            'X-RapidAPI-Key': apiKey,
+            'X-RapidAPI-Host': apiHost
+        }
+    };
+
+    try {
+      // 1. Call API
+      const response = await fetch(`https://${apiHost}/pinterest?url=${encodeURIComponent(urlInput)}`, settings);
+      
+      // 2. Parse JSON
+      const data = await response.json();
+      console.log(data); // Debugging
+
+      // 3. Extract Data based on your JSON structure
+      if (data.success && data.data && data.data.url) {
+        
+        const videoUrl = data.data.url;
+        const thumbnail = data.data.thumbnail;
+        const title = data.data.title || "Pinterest Video";
+
+        // 4. Update UI
+        videoPlayer.src = videoUrl;
+        videoPlayer.poster = thumbnail; // Set thumbnail
+        videoTitle.innerText = title; // Set title
+        downloadLink.href = videoUrl; // Set download link
+        
+        resultArea.style.display = 'block';
+      } else {
+        throw new Error("Video not found in the link.");
+      }
+
+    } catch (error) {
+      console.error(error);
+      errorMsg.innerText = "Error: Could not fetch video. Check the link or API quota.";
+    } finally {
+      loader.style.display = 'none';
+    }
   }
-}
 </script>
 
 </body>
